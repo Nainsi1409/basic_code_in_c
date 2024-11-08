@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "D:/temperature"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "temperature"
+	}
+}

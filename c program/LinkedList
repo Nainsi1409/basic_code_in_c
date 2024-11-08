@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<conio.h>
+struct node {
+    int info;
+    struct node *next;
+};
+struct node *FIRST = NULL;
+struct node *LAST = NULL;
+
+void insert(int);
+int delete(int);  // Change void to int
+void print(void);
+struct node* search(int value);  // Add prototype for search function
+
+int main() {
+    int num1, num2, choice;
+
+    while (1) {
+        printf("\n\nSelect an option");
+        printf("\n1-Insert");
+        printf("\n2-Delete");
+        printf("\n3-Print");
+        printf("\n4-Exit");
+
+        printf("\n\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: {
+                printf("\nEnter the element to be inserted into the linked list: ");
+                scanf("%d", &num1);
+                insert(num1);
+                printf("\n%d successfully inserted into the linked list.", num1);
+                break;
+            }
+            case 2: {
+                printf("\nEnter the element to be deleted from the linked list: ");
+                scanf("%d", &num1);
+                num2 = delete(num1);
+                if (num2 == -9999)
+                    printf("\n%d is not present in the linked list.", num1);
+                else
+                    printf("\nElement %d successfully deleted from the linked list.", num1);
+                break;
+            }
+            case 3: {
+                print();
+                break;
+            }
+            case 4: {
+                exit(0);
+                break;
+            }
+            default: {
+                printf("\nIncorrect choice. Please try again.");
+                break;
+            }
+        }
+    }
+
+    return 0;
+}
+
+void insert(int value) {
+    struct node ptr = (struct node)malloc(sizeof(struct node));
+    ptr->info = value;
+    ptr->next = NULL;
+
+    if (FIRST == NULL) {
+        FIRST = LAST = ptr;
+    } else {
+        LAST->next = ptr;
+        LAST = ptr;
+    }
+}
+
+int delete(int value) {
+    struct node *LOC, *TEMP;
+
+    LOC = search(value);
+
+    if (LOC == NULL)
+        return -9999;
+
+    if (LOC == FIRST) {
+        if (FIRST == LAST) {
+            FIRST = LAST = NULL;
+        } else {
+            FIRST = FIRST->next;
+        }
+        free(LOC);
+        return value;
+    }
+
+    for (TEMP = FIRST; TEMP->next != LOC; TEMP = TEMP->next);
+
+    TEMP->next = LOC->next;
+
+    if (LOC == LAST)
+        LAST = TEMP;
+
+    free(LOC);
+    return value;
+}
+
+struct node* search(int value) {
+    struct node *ptr = FIRST;
+    while (ptr != NULL) {
+        if (ptr->info == value)
+            return ptr;
+        ptr = ptr->next;
+    }
+    return NULL;
+}
+
+void print() {
+    struct node *ptr = FIRST;
+
+    if (FIRST == NULL) {
+        printf("\n\tEmpty list");
+        return;
+    }
+
+    printf("\nLinked list elements:");
+
+    while (ptr != NULL) {
+        printf("\t%d", ptr->info);
+        ptr = ptr->next;
+    }
+}
